@@ -1,8 +1,8 @@
-using System.Collections;
 using UnityEngine;
 
 public class PatrolMover
 {
+    private DirectionFlipper2D _directionFlipper;
     private Transform _characterTransform;
     private Route _route;
     private float _movementSpeed;
@@ -15,6 +15,9 @@ public class PatrolMover
         _movementSpeed = speed;
 
         _characterTransform.position = _route.GetNextWaypointPosition(_currentWaypointIndex);
+
+
+        _directionFlipper = new DirectionFlipper2D(characterTransform);
     }
 
     public void SetRoute(Route route) => _route = route;
@@ -24,12 +27,14 @@ public class PatrolMover
     {
         Vector3 startPosition = _characterTransform.position;
         Vector3 nextPosition = _route.GetNextWaypointPosition(_currentWaypointIndex);
-
-        _characterTransform.transform.right = nextPosition - _characterTransform.position;
+        
+        _directionFlipper.FlipHorizontal(nextPosition);
         _characterTransform.position = Vector3.MoveTowards(_characterTransform.position, nextPosition, _movementSpeed * Time.deltaTime);
 
         if (_characterTransform.position == nextPosition)
+        { 
             _currentWaypointIndex++;
+        }
 
         return (_characterTransform.position - startPosition).magnitude > 0;
     }

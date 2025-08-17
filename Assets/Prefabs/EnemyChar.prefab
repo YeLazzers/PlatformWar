@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7979299685695773247}
   - component: {fileID: 2345442150096035315}
   - component: {fileID: 4751234665611205919}
-  - component: {fileID: 4273191510459055677}
   - component: {fileID: 2760276706222705675}
   - component: {fileID: 7871395546899665524}
+  - component: {fileID: 3563338252023740754}
   m_Layer: 0
   m_Name: EnemyChar
   m_TagString: Untagged
@@ -109,18 +109,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4273191510459055677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3963972307363394677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 689f6f533f7e3c84a9190011cb7a8b68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2760276706222705675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,3 +168,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3563338252023740754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3963972307363394677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a66c12986430244e8062a9c5c2ad92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

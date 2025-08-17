@@ -14,12 +14,15 @@ public class Character : MonoBehaviour
     private CharacterAnimator _characterAnimator;
     private Rigidbody2D _rigidBody;
     private SpriteRenderer _spriteRenderer;
+    private DirectionFlipper2D _directionFlipper;
 
     private void Awake()
     {
         _characterAnimator = GetComponent<CharacterAnimator>();
         _rigidBody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _directionFlipper = new DirectionFlipper2D(transform);
     }
 
     private void OnEnable()
@@ -59,7 +62,7 @@ public class Character : MonoBehaviour
 
     private void OnMove(float direction)
     {
-        _spriteRenderer.flipX = direction == 0 ? _spriteRenderer.flipX : direction < 0;
+        _directionFlipper.FlipHorizontal(direction);
 
         Vector2 velocity = new Vector2(direction, 0) * _movementSpeed * Time.fixedDeltaTime;
         _rigidBody.velocity = new Vector2(velocity.x, _rigidBody.velocity.y);

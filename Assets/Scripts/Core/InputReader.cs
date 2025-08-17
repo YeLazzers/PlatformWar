@@ -1,12 +1,12 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class InputReader : MonoBehaviour
 {
     private readonly string Horizontal;
 
-    public event UnityAction JumpPressed;
-    public event UnityAction<float> HorizontalMoving;
+    public event Action JumpPressed;
+    public event Action<float> HorizontalMoving;
     
     private void Update()
     {

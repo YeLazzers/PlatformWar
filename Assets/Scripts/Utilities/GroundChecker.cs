@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundChecker : MonoBehaviour
@@ -11,7 +10,7 @@ public class GroundChecker : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!_isOnlyGround || _isOnlyGround && collision.tag == Tags.Ground)
+        if (!_isOnlyGround || _isOnlyGround && collision.TryGetComponent(out Ground ground))
         {
             isGrounded = true;
         }
@@ -19,7 +18,7 @@ public class GroundChecker : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!_isOnlyGround || _isOnlyGround && collision.tag == Tags.Ground)
+        if (!_isOnlyGround || _isOnlyGround && collision.TryGetComponent(out Ground ground))
         {
             isGrounded = false;
         }

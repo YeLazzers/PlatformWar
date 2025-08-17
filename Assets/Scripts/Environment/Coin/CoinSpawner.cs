@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CoinSpawner : MonoBehaviour
 {
-    [SerializeField] int _coinTotal;
-    [SerializeField] CoinSpot[] _spots;
+    [SerializeField] private int _coinTotal;
+    [SerializeField] private CoinSpot[] _spots;
 
     private void OnEnable()
     {
