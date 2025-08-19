@@ -4,26 +4,17 @@ using UnityEngine;
 [RequireComponent(typeof(Enemy))]
 public class EnemyAttacker: CharacterAttackerBase
 {
-    private Enemy _enemy;
-
-    private new void Awake()
+    public IEnumerator Attacking(Transform target, Enemy enemy)
     {
-        base.Awake();
-        _enemy = GetComponent<Enemy>();
-    }
-
-    private void Start()
-    {
-        StartCoroutine(Attacking());
-    }
-
-    private IEnumerator Attacking()
-    {
-        while (enabled)
+        enemy.StopMoving();
+        while (Vector2.Distance(transform.position, target.position) < _attackRange)
         {
-            yield return _waitForAttack;
-            _enemy.PatrolStop();
-            _characterAnimator.SetAttack();
+            if (_isAttackAvailable)
+            {
+                Attack();
+            }
+            yield return null;
         }
+        enemy.ContinueMoving();
     }
 }

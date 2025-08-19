@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(CharacterAnimator))]
@@ -16,7 +15,6 @@ public class Player : MonoBehaviour, IDamageable, IHealable
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _movementSpeed;
 
-    private BoxCollider2D _boxCollider;
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _characterAnimator;
     private CharacterHealth _health;
@@ -32,7 +30,6 @@ public class Player : MonoBehaviour, IDamageable, IHealable
 
     private void Awake()
     {
-        _boxCollider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _characterAnimator = GetComponent<CharacterAnimator>();
         _health = GetComponent<CharacterHealth>();
