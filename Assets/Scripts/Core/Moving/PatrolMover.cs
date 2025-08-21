@@ -7,9 +7,9 @@ public class PatrolMover : MoverBase
     private Route _route;
     private Waypoint _target;
 
-    public PatrolMover(Rigidbody2D rigidbody, float speed, Route route) : base(rigidbody, speed)
-    { 
-        _route = route;
+    public PatrolMover(Rigidbody2D rigidbody, float speed, ICoroutineRunner coroutineRunner, Route route) : base(rigidbody, speed, coroutineRunner)
+    {
+        SetRoute(route);
     }
 
     private IEnumerator WaitForNextWaypoint()
@@ -20,7 +20,10 @@ public class PatrolMover : MoverBase
         Activate();
     }
 
-    public void SetRoute(Route route) => _route = route;
+    public void SetRoute(Route route)
+    {
+        _route = route;
+    }
 
     public new void Activate()
     {
@@ -32,20 +35,20 @@ public class PatrolMover : MoverBase
 
     public void GoToNearestWaypoint()
     {
-        _target = _route.GetNearestWaypoint(_rigidbody.transform.position);
+        _target = _route.GetNearestWaypoint(Rigidbody.transform.position);
     }
 
     public override void Move()
     {
-        if (!_isActive)
+        if (!IsActive)
             return;
 
-        Vector3 direction = _target.transform.position - _rigidbody.transform.position;
+        Vector3 direction = _target.transform.position - Rigidbody.transform.position;
         if (direction.sqrMagnitude >= 0.003f)
             Move(direction);
         else
         {
-             CoroutineRunner.Instance.StartCoroutine(WaitForNextWaypoint());
+            CoroutineRunner.StartCoroutine(WaitForNextWaypoint());
         }
     }
 }

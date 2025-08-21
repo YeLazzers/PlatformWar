@@ -4,11 +4,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(CharacterAnimator))]
-[RequireComponent(typeof(CharacterHealth))]
-[RequireComponent(typeof(CharacterWallet))]
+[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(Wallet))]
 [RequireComponent(typeof(PlayerAttacker))]
 [RequireComponent(typeof(PlayerFx))]
-public class Player : MonoBehaviour, IDamageable, IHealable
+public class Player : MonoBehaviour, IHitable
 {
     [SerializeField] private GroundChecker _groundChecker;
     [SerializeField] private InputReader _inputReader;
@@ -17,23 +17,23 @@ public class Player : MonoBehaviour, IDamageable, IHealable
 
     private Rigidbody2D _rigidbody;
     private CharacterAnimator _characterAnimator;
-    private CharacterHealth _health;
-    private CharacterWallet _wallet;
+    private Health _health;
+    private Wallet _wallet;
     private PlayerAttacker _attacker;
     private PlayerFx _playerFx;
     private DirectionFlipper2D _directionFlipper;
     private bool _isMoving;
 
-    public CharacterHealth CharacterHealth => _health;
-    public CharacterWallet CharacterWallet => _wallet;
+    public Health Health => _health;
+    public Wallet Wallet => _wallet;
     public event Action<Player> Destroyed;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _characterAnimator = GetComponent<CharacterAnimator>();
-        _health = GetComponent<CharacterHealth>();
-        _wallet = GetComponent<CharacterWallet>();
+        _health = GetComponent<Health>();
+        _wallet = GetComponent<Wallet>();
         _attacker = GetComponent<PlayerAttacker>();
         _playerFx = GetComponent<PlayerFx>();
 
@@ -62,16 +62,6 @@ public class Player : MonoBehaviour, IDamageable, IHealable
     {
         _characterAnimator.SetIsGrounded(_groundChecker.IsGrounded);
         _characterAnimator.SetIsFlying(_rigidbody.velocity.y < 0);
-    }
-
-
-    public void TakeDamage(int amount, Transform attacker)
-    {
-        _characterAnimator.SetHit();
-
-        _health.ApplyDamage(amount);
-
-        _attacker.ReloadAttack();
     }
 
     public void Heal(int amount)
@@ -116,7 +106,7 @@ public class Player : MonoBehaviour, IDamageable, IHealable
 
     private void OnDie()
     {
-        gameObject.layer = Layers.Dead;
+        gameObject.layer = Layers.s_dead;
 
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.isKinematic = true;
@@ -127,5 +117,12 @@ public class Player : MonoBehaviour, IDamageable, IHealable
     public void OnDieAnimationEnd()
     {
         Destroyed?.Invoke(this);
+    }
+
+    public void Hit()
+    {
+        _characterAnimator.SetHit();
+
+        _attacker.ReloadAttack();
     }
 }

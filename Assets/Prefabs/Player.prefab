@@ -378,10 +378,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b06eae6a91a6646a46d935ef45da86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 10
-  _attackCD: 0.15
-  _attackRange: 0.5
-  _weaponPositionOffset: {x: 0, y: -0.15, z: 0}
+  Damage: 10
+  AttackCD: 0.15
+  AttackRange: 0.55
+  WeaponPositionOffset: {x: 0, y: -0.2, z: 0}
 --- !u!114 &-5324446948242673023
 MonoBehaviour:
   m_ObjectHideFlags: 0

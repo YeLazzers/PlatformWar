@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Coin : LootBase
 {
-    private static readonly int _pickupHash = Animator.StringToHash("Picked");
+    private static readonly int s_pickupHash = Animator.StringToHash("Picked");
 
     [SerializeField] private int _coinsValue;
 
@@ -11,16 +11,16 @@ public class Coin : LootBase
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_isInteracted && other.TryGetComponent(out Player player))
+        if (!IsInteracted && other.TryGetComponent(out Wallet wallet))
         {
-            player.CharacterWallet.AddCoins(_coinsValue);
+            wallet.AddCoins(_coinsValue);
             Interact();
         }
     }
     private new void Interact()
     {
         base.Interact();
-        _animator.SetTrigger(_pickupHash);
+        AnimatorComp.SetTrigger(s_pickupHash);
 
         StartCoroutine(DelayedDestroy());
     }

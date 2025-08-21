@@ -2,48 +2,56 @@ using UnityEngine;
 
 public abstract class MoverBase
 {
-    protected bool _isActive = false;
-    protected float _movementSpeed;
-    protected Rigidbody2D _rigidbody;
-    protected DirectionFlipper2D _directionFlipper;
+    protected float MovementSpeed;
+    protected Rigidbody2D Rigidbody;
+    protected DirectionFlipper2D DirectionFlipper;
+    protected ICoroutineRunner CoroutineRunner;
 
-    public bool IsActive => _isActive;
+    public bool IsActive { get; protected set; }
 
-    public MoverBase(Rigidbody2D rigidbody, float speed)
+    public MoverBase(Rigidbody2D rigidbody, float speed, ICoroutineRunner coroutineRunner)
     {
-        _rigidbody = rigidbody;
-        _movementSpeed = speed;
+        Rigidbody = rigidbody;
+        MovementSpeed = speed;
+        CoroutineRunner = coroutineRunner;
 
-        _directionFlipper = new DirectionFlipper2D(rigidbody);
+        DirectionFlipper = new DirectionFlipper2D(rigidbody);
+        IsActive = false;
     }
 
     protected void Move(Vector2 direction)
     {
-        if (!_isActive)
+        if (!IsActive)
             return;
 
-        _directionFlipper.FlipHorizontal(direction);
-        _rigidbody.velocity = new Vector2(direction.normalized.x * _movementSpeed, _rigidbody.velocity.y);
+        DirectionFlipper.FlipHorizontal(direction);
+        Rigidbody.velocity = new Vector2(direction.normalized.x * MovementSpeed, Rigidbody.velocity.y);
     }
 
     protected void Move(float xDirection)
     {
-        if (!_isActive)
+        if (!IsActive)
             return;
 
-        _directionFlipper.FlipHorizontal(xDirection);
-        _rigidbody.velocity = new Vector2(xDirection * _movementSpeed, _rigidbody.velocity.y);
+        DirectionFlipper.FlipHorizontal(xDirection);
+        Rigidbody.velocity = new Vector2(xDirection * MovementSpeed, Rigidbody.velocity.y);
     }
 
     public abstract void Move();
-    
-    public void SetSpeed(float speed) => _movementSpeed = speed;
 
-    public void Activate() => _isActive = true;
+    public void SetSpeed(float speed)
+    {
+        MovementSpeed = speed;
+    }
+
+    public void Activate()
+    {
+        IsActive = true;
+    }
 
     public void Deactivate()
     {
-        _isActive = false;
-        _rigidbody.velocity = Vector2.zero;
+        IsActive = false;
+        Rigidbody.velocity = Vector2.zero;
     }
 }

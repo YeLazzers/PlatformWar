@@ -2,19 +2,32 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
-public class EnemyAttacker: CharacterAttackerBase
+public class EnemyAttacker: AttackerBase
 {
-    public IEnumerator Attacking(Transform target, Enemy enemy)
+    private Coroutine _attackingCoroutine;
+
+    private IEnumerator Attacking(Transform target)
     {
-        enemy.StopMoving();
-        while (Vector2.Distance(transform.position, target.position) < _attackRange)
+        while (transform.position.IsEnoughClose(target.position, AttackRange))
         {
-            if (_isAttackAvailable)
+            if (IsAttackAvailable)
             {
                 Attack();
             }
             yield return null;
         }
-        enemy.ContinueMoving();
+    }
+
+    public void StartAttacking(Transform target)
+    {
+        StopAttacking();
+
+        _attackingCoroutine = StartCoroutine(Attacking(target));
+    }
+
+    public void StopAttacking()
+    {
+        if (_attackingCoroutine != null)
+            StopCoroutine(_attackingCoroutine);
     }
 }

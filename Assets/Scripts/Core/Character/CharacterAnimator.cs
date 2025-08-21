@@ -14,8 +14,14 @@ public class CharacterAnimator : MonoBehaviour
     private readonly int _hitHash = Animator.StringToHash("Hit");
     private readonly int _dieHash = Animator.StringToHash("Die");
 
-    public void Awake() => _animator = GetComponent<Animator>();
-    public void SetIsRunning(bool value) => _animator.SetBool(_isRunningHash, value);
+    public void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
+    public void SetIsRunning(bool value)
+    {
+        _animator.SetBool(_isRunningHash, value);
+    }
 
     public void SetIsGrounded(bool value)
     {
@@ -48,11 +54,23 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
-    public void SetAttack() => _animator.SetTrigger(_attackHash);
+    public void SetAttack()
+    {
+        _animator.SetTrigger(_attackHash);
+    }
 
-    public void SetRandomAttack() => _animator.SetTrigger(_attackHashes[Random.Range(0, _attackHashes.Length)]);
+    public void SetRandomAttack()
+    {
+        _animator.SetTrigger(_attackHashes[Random.Range(0, _attackHashes.Length)]);
+    }
 
-    public void SetHit() => _animator.SetTrigger(_hitHash);
+    public void SetHit()
+    {
+        _animator.SetTrigger(_hitHash);
+    }
 
-    public void SetDie() => _animator.SetTrigger(_dieHash);
+    public void SetDie()
+    {
+        _animator.SetTrigger(_dieHash);
+    }
 }

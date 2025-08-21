@@ -9,7 +9,8 @@ public class PlayerSpawner : MonoBehaviour
     private Player _player;
     private float _respawnTime = 3f;
 
-    public event Action<Player> PlayerSpawned;
+    public event Action<Player> Spawned;
+    public event Action<Player> Destroyed;
 
     private void Start()
     {
@@ -21,6 +22,8 @@ public class PlayerSpawner : MonoBehaviour
         player.Destroyed -= OnDied;
         Destroy(player.gameObject);
         
+        Destroyed?.Invoke(player);
+
         StartCoroutine(Spawn(new WaitForSeconds(_respawnTime)));
     }
 
@@ -35,6 +38,6 @@ public class PlayerSpawner : MonoBehaviour
         
         _player.Destroyed += OnDied;
 
-        PlayerSpawned?.Invoke(_player);
+        Spawned?.Invoke(_player);
     }
 }

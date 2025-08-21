@@ -1,15 +1,15 @@
 using System;
 using UnityEngine;
 
-public class CharacterHealth: MonoBehaviour
+public class Health : MonoBehaviour, IDamageable, IHealable
 {
     [SerializeField] private int _maxHealth;
 
     private int _health;
 
-    public int Health => _health;
-    public int MaxHealth => _maxHealth;
-    public event Action<int, int> HealthChanged;
+    public int Current => _health;
+    public int Max => _maxHealth;
+    public event Action<int, int> Changed;
     public event Action Died;
 
     private void Awake()
@@ -22,16 +22,16 @@ public class CharacterHealth: MonoBehaviour
         if (amount > 0)
         {
             _health = Mathf.Min(_health + amount, _maxHealth);
-            HealthChanged?.Invoke(_health, _maxHealth);
+            Changed?.Invoke(_health, _maxHealth);
         }
     }
 
-    public void ApplyDamage(int amount)
+    public void TakeDamage(int amount)
     {
         if (amount > 0)
         {
             _health = Mathf.Max(0, _health - amount);
-            HealthChanged?.Invoke(_health, _maxHealth);
+            Changed?.Invoke(_health, _maxHealth);
 
             if (_health == 0)
                 Died?.Invoke();

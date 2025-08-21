@@ -3,15 +3,15 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Box : LootBase
 {
-    private static readonly int _interactHash = Animator.StringToHash("Interact");
+    private static readonly int s_interactHash = Animator.StringToHash("Interact");
 
     [SerializeField] private int _healValue;
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_isInteracted && other.TryGetComponent(out Player player))
+        if (!IsInteracted && other.TryGetComponent(out IHealable healable))
         {
-            player.CharacterHealth.Heal(_healValue);
+            healable.Heal(_healValue);
             Interact();
         }
     }
@@ -19,6 +19,6 @@ public class Box : LootBase
     private new void Interact()
     {
         base.Interact();
-        _animator.SetTrigger(_interactHash);
+        AnimatorComp.SetTrigger(s_interactHash);
     }
 }

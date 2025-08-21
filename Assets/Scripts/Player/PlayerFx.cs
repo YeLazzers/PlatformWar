@@ -10,9 +10,4 @@ public class PlayerFx: MonoBehaviour
     {
         Instantiate(_groundDustFxPrefab, transform.position, transform.rotation);
     }
-
-    public void Destroy(string prefabName)
-    {
-
-    }
 }

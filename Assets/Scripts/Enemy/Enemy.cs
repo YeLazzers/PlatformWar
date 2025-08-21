@@ -2,8 +2,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterAnimator))]
-[RequireComponent(typeof(CharacterHealth))]
-public class Enemy : MonoBehaviour, IDamageable
+[RequireComponent(typeof(Health))]
+public class Enemy : MonoBehaviour, ICoroutineRunner, IPushable, IHitable
 {
     [SerializeField] private PlayerDetector _playerDetector;
     [SerializeField] private Route route;
@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private Rigidbody2D _rigidBody;
     private CharacterAnimator _characterAnimator;
-    private CharacterHealth _health;
     private EnemyAttacker _attacker;
     private PatrolMover _patrolMover;
     private FollowMover _followMover;
@@ -23,12 +22,11 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _characterAnimator = GetComponent<CharacterAnimator>();
-        _health = GetComponent<CharacterHealth>();
         _attacker = GetComponent<EnemyAttacker>();
 
-        _patrolMover = new PatrolMover(_rigidBody, _movementSpeed, route);
-        _followMover = new FollowMover(_rigidBody, _movementSpeed, _distanceToAttack);
-        
+        _patrolMover = new PatrolMover(_rigidBody, _movementSpeed, this, route);
+        _followMover = new FollowMover(_rigidBody, _movementSpeed, this, _distanceToAttack);
+
         _currentMover = _patrolMover;
 
     }
@@ -64,6 +62,7 @@ public class Enemy : MonoBehaviour, IDamageable
         _currentMover = _followMover;
         _followMover.Activate();
     }
+
     private void SwitchToPatrolMover()
     {
         _followMover.Deactivate();
@@ -74,10 +73,14 @@ public class Enemy : MonoBehaviour, IDamageable
 
     private void OnTargetReached(Transform target)
     {
-        StartCoroutine(_attacker.Attacking(target, this));
+        StopMoving();
+
+        _attacker.StartAttacking(target);
     }
     private void OnPlayerMissed(Player player)
     {
+        _attacker.StopAttacking();
+
         SwitchToPatrolMover();
     }
 
@@ -87,19 +90,25 @@ public class Enemy : MonoBehaviour, IDamageable
         SwitchToFollowMover();
     }
 
-    public void ContinueMoving() => _currentMover.Activate();
+    public void ContinueMoving()
+    {
+        _currentMover.Activate();
+    }
 
-    public void StopMoving() => _currentMover.Deactivate();
+    public void StopMoving()
+    {
+        _currentMover.Deactivate();
+    }
 
-    public void TakeDamage(int amount, Transform attacker)
+    public void Push(Vector3 direction)
+    {
+        _rigidBody.AddForce(direction.normalized * _hitForce, ForceMode2D.Impulse);
+    }
+
+    public void Hit()
     {
         StopMoving();
-
         _characterAnimator.SetHit();
-        _rigidBody.AddForce((transform.position - attacker.position).normalized * _hitForce, ForceMode2D.Impulse);
-
-        _health.ApplyDamage(amount);
-
         _attacker.ReloadAttack();
     }
 }

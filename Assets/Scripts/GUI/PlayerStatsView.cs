@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerStatsView: MonoBehaviour
+public class PlayerStatsView : MonoBehaviour
 {
     [SerializeField] private PlayerSpawner _playerSpawner;
     [SerializeField] private TextMeshProUGUI _healthTMP;
@@ -9,24 +9,35 @@ public class PlayerStatsView: MonoBehaviour
 
     private void OnEnable()
     {
-        _playerSpawner.PlayerSpawned += OnPlayerSpawned;
+        _playerSpawner.Spawned += OnPlayerSpawned;
+        _playerSpawner.Destroyed += OnPlayerDestroyed;
     }
 
     private void OnDisable()
     {
-        _playerSpawner.PlayerSpawned -= OnPlayerSpawned;
+        _playerSpawner.Spawned -= OnPlayerSpawned;
+        _playerSpawner.Destroyed -= OnPlayerDestroyed;
     }
 
     private void OnPlayerSpawned(Player player)
     {
-        player.CharacterHealth.HealthChanged += UpdateHealthUI;
-        UpdateHealthUI(player.CharacterHealth.Health, player.CharacterHealth.MaxHealth);
+        player.Health.Changed += UpdateHealthUI;
+        UpdateHealthUI(player.Health.Current, player.Health.Max);
 
-        player.CharacterWallet.CoinsChanged += UpdateCoinsUI;
-        UpdateCoinsUI(player.CharacterWallet.Coins);
+        player.Wallet.CoinsChanged += UpdateCoinsUI;
+        UpdateCoinsUI(player.Wallet.Coins);
     }
 
-    private void UpdateHealthUI(int current, int max) => _healthTMP.text = $"{current} / {max}";
+    private void OnPlayerDestroyed(Player player)
+    {
+        player.Health.Changed -= UpdateHealthUI;
+        player.Wallet.CoinsChanged -= UpdateCoinsUI;
+    }
+
+    private void UpdateHealthUI(int current, int max)
+    {
+        _healthTMP.text = $"{current} / {max}";
+    }
 
     private void UpdateCoinsUI(int amount)
     {

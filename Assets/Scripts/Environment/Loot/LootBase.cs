@@ -3,19 +3,18 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public abstract class LootBase : MonoBehaviour
 {
-    protected Animator _animator;
-    protected bool _isInteracted = false;
+    protected Animator AnimatorComp;
 
-    public bool IsInteracted => _isInteracted;
+    public bool IsInteracted { get; protected set; }
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        AnimatorComp = GetComponent<Animator>();
     }
 
     protected void Interact()
     {
-        _isInteracted = true;
+        IsInteracted = true;
     }
 
     protected abstract void OnTriggerEnter2D(Collider2D other);

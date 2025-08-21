@@ -1,15 +1,15 @@
-public class PlayerAttacker : CharacterAttackerBase
+public class PlayerAttacker : AttackerBase
 {
     public void Attack(bool isMoving)
     {
-        if (!_isAttackAvailable)
+        if (!IsAttackAvailable)
             return;
 
         DisallowAtack();
 
         if (isMoving)
-            _characterAnimator.SetAttack();
+            Animator.SetAttack();
         else
-            _characterAnimator.SetRandomAttack();        
+            Animator.SetRandomAttack();        
     }
 }
