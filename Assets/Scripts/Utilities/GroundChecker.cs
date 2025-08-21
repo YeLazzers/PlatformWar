@@ -8,7 +8,7 @@ public class GroundChecker : MonoBehaviour
 
     public bool IsGrounded => isGrounded;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (!_isOnlyGround || _isOnlyGround && collision.TryGetComponent(out Ground ground))
         {

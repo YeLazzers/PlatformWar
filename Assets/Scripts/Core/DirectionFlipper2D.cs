@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class DirectionFlipper2D
 {
-    private Transform _characterTransform;
+    private Rigidbody2D _rigidBody;
 
-    public DirectionFlipper2D(Transform characterTransform)
+    public DirectionFlipper2D(Rigidbody2D rigidBody)
     {
-        _characterTransform = characterTransform;
+        _rigidBody = rigidBody;
     }
 
     public void FlipHorizontal(float xDirection)
@@ -16,9 +16,9 @@ public class DirectionFlipper2D
         else if (xDirection < 0)
             TurnLeft();
     }
-    public void FlipHorizontal(Vector3 position)
+    public void FlipHorizontal(Vector2 direction)
     {
-        float deltaX = position.x - _characterTransform.position.x;
+        float deltaX = direction.normalized.x;
 
         if (deltaX > 0)
             TurnRight();
@@ -28,11 +28,12 @@ public class DirectionFlipper2D
 
     private void TurnLeft()
     {
-        _characterTransform.transform.right = Vector3.left;
+        
+        _rigidBody.transform.right = Vector2.left;
     }
 
     private void TurnRight()
     {
-        _characterTransform.transform.right = Vector3.right;
+        _rigidBody.transform.right = Vector2.right;
     }
 }
