@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Wallet))]
 [RequireComponent(typeof(PlayerAttacker))]
-[RequireComponent(typeof(PlayerFx))]
+[RequireComponent(typeof(CharacterAnimationEvents))]
 public class Player : MonoBehaviour, IHitable
 {
     [SerializeField] private GroundChecker _groundChecker;
@@ -16,26 +16,27 @@ public class Player : MonoBehaviour, IHitable
     [SerializeField] private float _movementSpeed;
 
     private Rigidbody2D _rigidbody;
-    private CharacterAnimator _characterAnimator;
+    private CharacterAnimator _animator;
+    private CharacterAnimationEvents _animationEvents;
     private Health _health;
     private Wallet _wallet;
     private PlayerAttacker _attacker;
-    private PlayerFx _playerFx;
     private DirectionFlipper2D _directionFlipper;
     private bool _isMoving;
 
+    public event Action<Player> Dead;
+
     public Health Health => _health;
     public Wallet Wallet => _wallet;
-    public event Action<Player> Destroyed;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _characterAnimator = GetComponent<CharacterAnimator>();
+        _animator = GetComponent<CharacterAnimator>();
+        _animationEvents = GetComponent<CharacterAnimationEvents>();
         _health = GetComponent<Health>();
         _wallet = GetComponent<Wallet>();
         _attacker = GetComponent<PlayerAttacker>();
-        _playerFx = GetComponent<PlayerFx>();
 
         _directionFlipper = new DirectionFlipper2D(_rigidbody);
     }
@@ -47,6 +48,10 @@ public class Player : MonoBehaviour, IHitable
         _inputReader.Attacked += OnAttack;
 
         _health.Died += OnDie;
+
+        _animationEvents.Attacking += _attacker.DoDamage;
+        _animationEvents.Hitted += _attacker.ReloadAttack;
+        _animationEvents.Dead += OnDead;
     }
 
     private void OnDisable()
@@ -56,17 +61,21 @@ public class Player : MonoBehaviour, IHitable
         _inputReader.Attacked -= OnAttack;
 
         _health.Died -= OnDie;
+
+        _animationEvents.Attacking -= _attacker.DoDamage;
+        _animationEvents.Hitted -= _attacker.ReloadAttack;
+        _animationEvents.Dead -= OnDead;
     }
 
     private void Update()
     {
-        _characterAnimator.SetIsGrounded(_groundChecker.IsGrounded);
-        _characterAnimator.SetIsFlying(_rigidbody.velocity.y < 0);
+        _animator.SetIsGrounded(_groundChecker.IsGrounded);
+        _animator.SetIsFlying(_rigidbody.velocity.y < 0);
     }
 
-    public void Heal(int amount)
+    public void Hit()
     {
-        _health.Heal(amount);
+        _animator.SetHit();
     }
 
     private void OnJump()
@@ -74,7 +83,7 @@ public class Player : MonoBehaviour, IHitable
         if (_groundChecker.IsGrounded)
         {
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-            _characterAnimator.SetIsJumping(true);
+            _animator.SetIsJumping(true);
         }
     }
 
@@ -91,12 +100,7 @@ public class Player : MonoBehaviour, IHitable
         _rigidbody.velocity = new Vector2(horizontalVelocity.x, _rigidbody.velocity.y);
 
         _isMoving = direction != 0;
-        _characterAnimator.SetIsRunning(_isMoving);
-
-        if (isMovingPrevState == false && _isMoving && _groundChecker.IsGrounded)
-        {
-            _playerFx.GroundDust();
-        }
+        _animator.SetIsRunning(_isMoving);
     }
 
     private void OnAttack()
@@ -111,18 +115,11 @@ public class Player : MonoBehaviour, IHitable
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.isKinematic = true;
 
-        _characterAnimator.SetDie();
+        _animator.SetDie();
     }
 
-    public void OnDieAnimationEnd()
+    private void OnDead()
     {
-        Destroyed?.Invoke(this);
-    }
-
-    public void Hit()
-    {
-        _characterAnimator.SetHit();
-
-        _attacker.ReloadAttack();
+        Dead?.Invoke(this);
     }
 }

@@ -3,6 +3,6 @@ using UnityEngine;
 
 public interface ICoroutineRunner
 {
-    Coroutine StartCoroutine(IEnumerator routine);
-    void StopCoroutine(Coroutine coroutine);
+    public Coroutine StartCoroutine(IEnumerator routine);
+    public void StopCoroutine(Coroutine coroutine);
 }

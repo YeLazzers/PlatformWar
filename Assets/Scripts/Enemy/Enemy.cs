@@ -3,12 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterAnimator))]
 [RequireComponent(typeof(Health))]
-public class Enemy : MonoBehaviour, ICoroutineRunner, IPushable, IHitable
+public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
 {
     [SerializeField] private PlayerDetector _playerDetector;
     [SerializeField] private Route route;
     [SerializeField] private float _movementSpeed;
-    [SerializeField] private float _hitForce;
+    [SerializeField] private float _pushForce;
     [SerializeField] private float _distanceToAttack;
 
     private Rigidbody2D _rigidBody;
@@ -34,15 +34,23 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IPushable, IHitable
     private void OnEnable()
     {
         _followMover.TargetReached += OnTargetReached;
-        _playerDetector.Detected += OnPlayerDetected;
-        _playerDetector.Missed += OnPlayerMissed;
+
+        if (_playerDetector != null)
+        {
+            _playerDetector.Detected += OnPlayerDetected;
+            _playerDetector.Missed += OnPlayerMissed;
+        }
     }
 
     private void OnDisable()
     {
         _followMover.TargetReached -= OnTargetReached;
-        _playerDetector.Detected -= OnPlayerDetected;
-        _playerDetector.Missed -= OnPlayerMissed;
+
+        if (_playerDetector != null)
+        {
+            _playerDetector.Detected -= OnPlayerDetected;
+            _playerDetector.Missed -= OnPlayerMissed;
+        }
     }
 
     private void Start()
@@ -54,6 +62,22 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IPushable, IHitable
     {
         _currentMover.Move();
         _characterAnimator.SetIsRunning(_currentMover.IsActive);
+    }
+
+    public void ContinueMoving() =>
+        _currentMover.Activate();
+
+    public void StopMoving() =>
+        _currentMover.Deactivate();
+
+    public void Knockback(Vector3 direction) =>
+        _rigidBody.AddForce(direction.normalized * _pushForce, ForceMode2D.Impulse);
+
+    public void Hit()
+    {
+        StopMoving();
+        _characterAnimator.SetHit();
+        _attacker.ReloadAttack();
     }
 
     private void SwitchToFollowMover()
@@ -88,27 +112,5 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IPushable, IHitable
     {
         _followMover.SetTarget(player.transform);
         SwitchToFollowMover();
-    }
-
-    public void ContinueMoving()
-    {
-        _currentMover.Activate();
-    }
-
-    public void StopMoving()
-    {
-        _currentMover.Deactivate();
-    }
-
-    public void Push(Vector3 direction)
-    {
-        _rigidBody.AddForce(direction.normalized * _hitForce, ForceMode2D.Impulse);
-    }
-
-    public void Hit()
-    {
-        StopMoving();
-        _characterAnimator.SetHit();
-        _attacker.ReloadAttack();
     }
 }

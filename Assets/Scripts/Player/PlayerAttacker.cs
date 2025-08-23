@@ -2,7 +2,7 @@ public class PlayerAttacker : AttackerBase
 {
     public void Attack(bool isMoving)
     {
-        if (!IsAttackAvailable)
+        if (IsAttackAvailable == false)
             return;
 
         DisallowAtack();

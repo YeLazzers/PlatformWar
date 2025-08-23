@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PatrolMover : MoverBase
 {
+    private float _reachDistance = 0.03f;
     private float nextWaypointWaitTime = 1f;
     private Route _route;
     private Waypoint _target;
@@ -12,12 +13,15 @@ public class PatrolMover : MoverBase
         SetRoute(route);
     }
 
-    private IEnumerator WaitForNextWaypoint()
+    public override void Move()
     {
-        Deactivate();
-        yield return new WaitForSeconds(nextWaypointWaitTime);
-        _target = _route.GetNextWaypoint(_target);
-        Activate();
+        if (IsActive == false)
+            return;
+
+        if (Rigidbody.transform.position.IsEnoughClose(_target.transform.position, _reachDistance) == false)
+            base.Move(_target.transform.position - Rigidbody.transform.position);
+        else
+            CoroutineRunner.StartCoroutine(WaitForNextWaypoint());
     }
 
     public void SetRoute(Route route)
@@ -38,17 +42,11 @@ public class PatrolMover : MoverBase
         _target = _route.GetNearestWaypoint(Rigidbody.transform.position);
     }
 
-    public override void Move()
+    private IEnumerator WaitForNextWaypoint()
     {
-        if (!IsActive)
-            return;
-
-        Vector3 direction = _target.transform.position - Rigidbody.transform.position;
-        if (direction.sqrMagnitude >= 0.003f)
-            Move(direction);
-        else
-        {
-            CoroutineRunner.StartCoroutine(WaitForNextWaypoint());
-        }
+        Deactivate();
+        yield return new WaitForSeconds(nextWaypointWaitTime);
+        _target = _route.GetNextWaypoint(_target);
+        Activate();
     }
 }

@@ -9,7 +9,6 @@ public class PlayerDetector : MonoBehaviour
     public event Action<Player> Detected;
     public event Action<Player> Missed;
 
-
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.TryGetComponent(out Player player))

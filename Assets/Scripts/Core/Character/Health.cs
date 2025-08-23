@@ -7,10 +7,11 @@ public class Health : MonoBehaviour, IDamageable, IHealable
 
     private int _health;
 
-    public int Current => _health;
-    public int Max => _maxHealth;
     public event Action<int, int> Changed;
     public event Action Died;
+
+    public int Current => _health;
+    public int Max => _maxHealth;
 
     private void Awake()
     {

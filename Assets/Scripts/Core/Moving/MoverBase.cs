@@ -7,8 +7,6 @@ public abstract class MoverBase
     protected DirectionFlipper2D DirectionFlipper;
     protected ICoroutineRunner CoroutineRunner;
 
-    public bool IsActive { get; protected set; }
-
     public MoverBase(Rigidbody2D rigidbody, float speed, ICoroutineRunner coroutineRunner)
     {
         Rigidbody = rigidbody;
@@ -19,23 +17,7 @@ public abstract class MoverBase
         IsActive = false;
     }
 
-    protected void Move(Vector2 direction)
-    {
-        if (!IsActive)
-            return;
-
-        DirectionFlipper.FlipHorizontal(direction);
-        Rigidbody.velocity = new Vector2(direction.normalized.x * MovementSpeed, Rigidbody.velocity.y);
-    }
-
-    protected void Move(float xDirection)
-    {
-        if (!IsActive)
-            return;
-
-        DirectionFlipper.FlipHorizontal(xDirection);
-        Rigidbody.velocity = new Vector2(xDirection * MovementSpeed, Rigidbody.velocity.y);
-    }
+    public bool IsActive { get; protected set; }
 
     public abstract void Move();
 
@@ -53,5 +35,23 @@ public abstract class MoverBase
     {
         IsActive = false;
         Rigidbody.velocity = Vector2.zero;
+    }
+
+    protected void Move(Vector2 direction)
+    {
+        if (IsActive == false)
+            return;
+
+        DirectionFlipper.FlipHorizontal(direction);
+        Rigidbody.velocity = new Vector2(direction.normalized.x * MovementSpeed, Rigidbody.velocity.y);
+    }
+
+    protected void Move(float xDirection)
+    {
+        if (IsActive == false)
+            return;
+
+        DirectionFlipper.FlipHorizontal(xDirection);
+        Rigidbody.velocity = new Vector2(xDirection * MovementSpeed, Rigidbody.velocity.y);
     }
 }
