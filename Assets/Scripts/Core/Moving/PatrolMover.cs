@@ -7,10 +7,12 @@ public class PatrolMover : MoverBase
     private float nextWaypointWaitTime = 1f;
     private Route _route;
     private Waypoint _target;
+    private WaitForSeconds _yieldWaitTime;
 
     public PatrolMover(Rigidbody2D rigidbody, float speed, ICoroutineRunner coroutineRunner, Route route) : base(rigidbody, speed, coroutineRunner)
     {
         SetRoute(route);
+        _yieldWaitTime = new WaitForSeconds(nextWaypointWaitTime);
     }
 
     public override void Move()
@@ -45,7 +47,7 @@ public class PatrolMover : MoverBase
     private IEnumerator WaitForNextWaypoint()
     {
         Deactivate();
-        yield return new WaitForSeconds(nextWaypointWaitTime);
+        yield return _yieldWaitTime;
         _target = _route.GetNextWaypoint(_target);
         Activate();
     }
