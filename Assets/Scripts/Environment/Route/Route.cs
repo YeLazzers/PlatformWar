@@ -9,7 +9,7 @@ public class Route : MonoBehaviour
 
     public Waypoint GetNearestWaypoint(Vector3 position)
     {
-        return _waypoints.OrderByDescending(w => (w.transform.position - position).sqrMagnitude).FirstOrDefault();
+        return _waypoints.OrderBy(w => (w.transform.position - position).sqrMagnitude).FirstOrDefault();
     }
 
     public Waypoint GetNextWaypoint(int currentIndex) => _waypoints[++currentIndex % _waypoints.Count];

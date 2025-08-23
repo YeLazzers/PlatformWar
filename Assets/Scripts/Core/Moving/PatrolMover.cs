@@ -29,7 +29,7 @@ public class PatrolMover : MoverBase
         _route = route;
     }
 
-    public new void Activate()
+    public override void Activate()
     {
         base.Activate();
 

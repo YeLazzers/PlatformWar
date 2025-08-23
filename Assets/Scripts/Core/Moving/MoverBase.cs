@@ -26,7 +26,7 @@ public abstract class MoverBase
         MovementSpeed = speed;
     }
 
-    public void Activate()
+    public virtual void Activate()
     {
         IsActive = true;
     }
