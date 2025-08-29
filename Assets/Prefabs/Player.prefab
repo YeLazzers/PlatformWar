@@ -125,6 +125,96 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03803ef15670f364caaee51feb52f50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3628588582533678470
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 396970633608278509}
+  - component: {fileID: 6259678301948539065}
+  - component: {fileID: 5807132995548701596}
+  m_Layer: 6
+  m_Name: LootCollector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &396970633608278509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3628588582533678470}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6826884507318535100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &6259678301948539065
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3628588582533678470}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.01692643, y: -0.061439365}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.52614707, y: 0.87287873}
+  m_EdgeRadius: 0
+--- !u!114 &5807132995548701596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3628588582533678470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a636edff4547a904095b51d82cbe2579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4128201374997169874
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +233,7 @@ GameObject:
   - component: {fileID: 8910276625009134906}
   - component: {fileID: 5237217853593483657}
   - component: {fileID: 1744478845661940090}
-  - component: {fileID: -5324446948242673023}
+  - component: {fileID: 2701465668470954163}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -166,6 +256,7 @@ Transform:
   m_Children:
   - {fileID: 7833842276373640254}
   - {fileID: 4766939698365924508}
+  - {fileID: 396970633608278509}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1656609122152381411
@@ -382,7 +473,7 @@ MonoBehaviour:
   AttackCD: 0.15
   AttackRange: 0.55
   WeaponPositionOffset: {x: 0, y: -0.2, z: 0}
---- !u!114 &-5324446948242673023
+--- !u!114 &2701465668470954163
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -391,7 +482,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4128201374997169874}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5df89dc100eea1240af27c179b82809f, type: 3}
+  m_Script: {fileID: 11500000, guid: ba1382145e12c4e42b46a725b202d0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundDustFxPrefab: {fileID: 2846266559781824371, guid: a3c1151d11ed2d44d8e45076f85b289f, type: 3}
+  _collector: {fileID: 5807132995548701596}

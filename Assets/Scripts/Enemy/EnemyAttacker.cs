@@ -6,18 +6,6 @@ public class EnemyAttacker: AttackerBase
 {
     private Coroutine _attackingCoroutine;
 
-    private IEnumerator Attacking(Transform target)
-    {
-        while (transform.position.IsEnoughClose(target.position, AttackRange))
-        {
-            if (IsAttackAvailable)
-            {
-                Attack();
-            }
-            yield return null;
-        }
-    }
-
     public void StartAttacking(Transform target)
     {
         StopAttacking();
@@ -29,5 +17,16 @@ public class EnemyAttacker: AttackerBase
     {
         if (_attackingCoroutine != null)
             StopCoroutine(_attackingCoroutine);
+    }
+
+    private IEnumerator Attacking(Transform target)
+    {
+        while (transform.position.IsEnoughClose(target.position, AttackRange))
+        {
+            if (IsAttackAvailable)
+                Attack();
+
+            yield return null;
+        }
     }
 }

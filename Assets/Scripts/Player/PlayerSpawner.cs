@@ -19,7 +19,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private void OnDied(Player player)
     {
-        player.Destroyed -= OnDied;
+        player.Dead -= OnDied;
         Destroy(player.gameObject);
         
         Destroyed?.Invoke(player);
@@ -36,7 +36,7 @@ public class PlayerSpawner : MonoBehaviour
 
         _player = Instantiate(_prefab, transform);
         
-        _player.Destroyed += OnDied;
+        _player.Dead += OnDied;
 
         Spawned?.Invoke(_player);
     }

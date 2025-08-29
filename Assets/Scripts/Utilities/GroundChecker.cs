@@ -4,23 +4,23 @@ public class GroundChecker : MonoBehaviour
 {
     [SerializeField] private bool _isOnlyGround;
 
-    private bool isGrounded;
+    private bool _isGrounded;
 
-    public bool IsGrounded => isGrounded;
+    public bool IsGrounded => _isGrounded;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!_isOnlyGround || _isOnlyGround && collision.TryGetComponent(out Ground ground))
+        if (_isOnlyGround == false || _isOnlyGround && collision.TryGetComponent(out Ground ground))
         {
-            isGrounded = true;
+            _isGrounded = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!_isOnlyGround || _isOnlyGround && collision.TryGetComponent(out Ground ground))
+        if (_isOnlyGround == false || _isOnlyGround && collision.TryGetComponent(out Ground ground))
         {
-            isGrounded = false;
+            _isGrounded = false;
         }
     }
 }

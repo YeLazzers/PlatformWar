@@ -4806,12 +4806,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2508652171174008298, guid: f065201270ec02747ac8d09bd35967d1, type: 3}
+      propertyPath: _pushForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2508652171174008298, guid: f065201270ec02747ac8d09bd35967d1, type: 3}
       propertyPath: _playerDetector
       value: 
       objectReference: {fileID: 1734487299}
     - target: {fileID: 2508652171174008298, guid: f065201270ec02747ac8d09bd35967d1, type: 3}
       propertyPath: _distanceToAttack
-      value: 0.55
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 2647631632682667417, guid: f065201270ec02747ac8d09bd35967d1, type: 3}
       propertyPath: Damage

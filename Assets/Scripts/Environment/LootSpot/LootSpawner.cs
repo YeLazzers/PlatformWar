@@ -14,16 +14,24 @@ public class LootSpawner : MonoBehaviour
     {
         for (int i = 0; i < _coinTotal; i++)
         {
-            GetRandomAvailableSpot()
+            LootBase coin = GetRandomAvailableSpot()
                 .Spawn(_coinPrefab);
+
+            coin.AnimationEvents.Interacted += OnInteractedDestroy;
         }
 
         for (int i = 0; i < _boxTotal; i++)
         {
-
             GetRandomAvailableSpot()
                 .Spawn(_boxPrefab);
         }
+    }
+
+    private void OnInteractedDestroy(LootAnimationEvents lootEvents)
+    {
+        lootEvents.Interacted -= OnInteractedDestroy;
+
+        Destroy(lootEvents.gameObject);
     }
 
     private LootSpot GetRandomAvailableSpot()

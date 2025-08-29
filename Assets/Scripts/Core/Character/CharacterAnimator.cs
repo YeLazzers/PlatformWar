@@ -3,8 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class CharacterAnimator : MonoBehaviour
 {
-    private Animator _animator;
-
     private readonly int _isRunningHash = Animator.StringToHash("IsRunning");
     private readonly int _isGroundedHash = Animator.StringToHash("IsGrounded");
     private readonly int _isFlyingHash = Animator.StringToHash("IsFlying");
@@ -14,10 +12,13 @@ public class CharacterAnimator : MonoBehaviour
     private readonly int _hitHash = Animator.StringToHash("Hit");
     private readonly int _dieHash = Animator.StringToHash("Die");
 
-    public void Awake()
+    private Animator _animator;
+
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
     }
+
     public void SetIsRunning(bool value)
     {
         _animator.SetBool(_isRunningHash, value);

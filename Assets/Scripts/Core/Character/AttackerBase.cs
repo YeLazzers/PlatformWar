@@ -12,10 +12,11 @@ public abstract class AttackerBase : MonoBehaviour
     [SerializeField] protected float AttackRange;
     [SerializeField] protected Vector3 WeaponPositionOffset;
 
-    private Coroutine _waitForAttackCoroutine;
-
     protected WaitForSeconds WaitForAttack;
     protected CharacterAnimator Animator;
+
+
+    private Coroutine _waitForAttackCoroutine;
 
     public bool IsAttackAvailable { get; protected set; }
 
@@ -34,12 +35,6 @@ public abstract class AttackerBase : MonoBehaviour
         Gizmos.DrawLine(transform.position + WeaponPositionOffset, transform.position + new Vector3(AttackRange * transform.right.x, 0) + WeaponPositionOffset);
     }
 
-    protected IEnumerator WaitAttackCD()
-    {
-        yield return WaitForAttack;
-        AllowAtack();
-    }
-
     public void DoDamage()
     {
         Vector3 attackDirection = transform.right;
@@ -52,16 +47,17 @@ public abstract class AttackerBase : MonoBehaviour
             {
                 damageable.TakeDamage(Damage);
             }
-            if (collider.TryGetComponent(out IPushable pushable))
+            if (collider.TryGetComponent(out IKnockbackable pushable))
             {
-                pushable.Push(attackDirection);
+                pushable.Knockback(attackDirection);
             }
             if (collider.TryGetComponent(out IHitable hitable))
             {
                 hitable.Hit();
             }
         }
-        StartCoroutine(WaitAttackCD());
+
+        ReloadAttack();
     }
 
     public void Attack()
@@ -90,5 +86,11 @@ public abstract class AttackerBase : MonoBehaviour
             StopCoroutine(_waitForAttackCoroutine);
 
         _waitForAttackCoroutine = StartCoroutine(WaitAttackCD());
+    }
+
+    private IEnumerator WaitAttackCD()
+    {
+        yield return WaitForAttack;
+        AllowAtack();
     }
 }
