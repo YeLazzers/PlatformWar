@@ -46,6 +46,7 @@ public class PatrolMover : MoverBase
 
     private IEnumerator WaitForNextWaypoint()
     {
+        Stop();
         Deactivate();
         yield return _yieldWaitTime;
         _target = _route.GetNextWaypoint(_target);

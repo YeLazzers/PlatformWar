@@ -21,21 +21,17 @@ public abstract class MoverBase
 
     public abstract void Move();
 
-    public void SetSpeed(float speed)
-    {
+    public void SetSpeed(float speed) =>
         MovementSpeed = speed;
-    }
 
-    public virtual void Activate()
-    {
+    public virtual void Activate() =>
         IsActive = true;
-    }
 
-    public void Deactivate()
-    {
+    public void Deactivate() =>
         IsActive = false;
+
+    public void Stop() =>
         Rigidbody.velocity = Vector2.zero;
-    }
 
     protected void Move(Vector2 direction)
     {

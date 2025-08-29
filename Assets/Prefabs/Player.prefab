@@ -229,11 +229,13 @@ GameObject:
   - component: {fileID: 3931437233314361092}
   - component: {fileID: 3660033762848021864}
   - component: {fileID: 42586694931323142}
+  - component: {fileID: 119665301533199894}
   - component: {fileID: 9061566987685650599}
-  - component: {fileID: 8910276625009134906}
   - component: {fileID: 5237217853593483657}
   - component: {fileID: 1744478845661940090}
   - component: {fileID: 2701465668470954163}
+  - component: {fileID: 1029684113888848130}
+  - component: {fileID: 3538681834647806354}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -416,6 +418,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a66c12986430244e8062a9c5c2ad92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &119665301533199894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4128201374997169874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb0e0a5faf4431e41a5d3f38493d03d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9061566987685650599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,19 +446,6 @@ MonoBehaviour:
   _inputReader: {fileID: 3674737505338594591}
   _jumpForce: 5
   _movementSpeed: 3
---- !u!114 &8910276625009134906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4128201374997169874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2d7ae6857954e64badf2e00863be02a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 20
 --- !u!114 &5237217853593483657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b06eae6a91a6646a46d935ef45da86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 10
+  Damage: 3
   AttackCD: 0.15
   AttackRange: 0.55
   WeaponPositionOffset: {x: 0, y: -0.2, z: 0}
@@ -486,3 +487,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collector: {fileID: 5807132995548701596}
+--- !u!114 &1029684113888848130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4128201374997169874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9dc5e93293354169a2d4b901a507352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _max: 20
+--- !u!114 &3538681834647806354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4128201374997169874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648a0b1ef8c8745c38a6894798bc6f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 1029684113888848130}
+  _uiElement: {fileID: 0}
+  _offset: {x: 0, y: 0.65, z: 0}

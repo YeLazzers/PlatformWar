@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
-public class EnemyAttacker: AttackerBase
+public class EnemyAttacker : AttackerBase
 {
     private Coroutine _attackingCoroutine;
+
+    public event Action TargetEscaped;
 
     public void StartAttacking(Transform target)
     {
@@ -28,5 +31,7 @@ public class EnemyAttacker: AttackerBase
 
             yield return null;
         }
+
+        TargetEscaped?.Invoke();
     }
 }

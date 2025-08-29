@@ -47,13 +47,15 @@ public abstract class AttackerBase : MonoBehaviour
             {
                 damageable.TakeDamage(Damage);
             }
-            if (collider.TryGetComponent(out IKnockbackable pushable))
-            {
-                pushable.Knockback(attackDirection);
-            }
+
             if (collider.TryGetComponent(out IHitable hitable))
             {
                 hitable.Hit();
+            }
+
+            if (collider.TryGetComponent(out IKnockbackable knockbackable))
+            {
+                knockbackable.Knockback(attackDirection);
             }
         }
 

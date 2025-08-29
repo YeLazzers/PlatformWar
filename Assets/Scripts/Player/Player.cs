@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IHitable
     private DirectionFlipper2D _directionFlipper;
     private bool _isMoving;
 
-    public event Action<Player> Dead;
+    public event Action<Player> Died;
 
     public Health Health => _health;
     public Wallet Wallet => _wallet;
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour, IHitable
 
         _animationEvents.Attacking += _attacker.DoDamage;
         _animationEvents.Hitted += _attacker.ReloadAttack;
-        _animationEvents.Dead += OnDead;
+        _animationEvents.Dead += OnDied;
     }
 
     private void OnDisable()
@@ -64,13 +64,25 @@ public class Player : MonoBehaviour, IHitable
 
         _animationEvents.Attacking -= _attacker.DoDamage;
         _animationEvents.Hitted -= _attacker.ReloadAttack;
-        _animationEvents.Dead -= OnDead;
+        _animationEvents.Dead -= OnDied;
     }
 
     private void Update()
     {
         _animator.SetIsGrounded(_groundChecker.IsGrounded);
         _animator.SetIsFlying(_rigidbody.velocity.y < 0);
+    }
+
+    public void Initialize(Vector2 position)
+    {
+        transform.position = position;
+
+        _health.Reset();
+        _animator.Reset();
+        _attacker.ReloadAttack();
+
+        _rigidbody.isKinematic = false;
+        gameObject.layer = Layers.s_player;
     }
 
     public void Hit()
@@ -105,7 +117,8 @@ public class Player : MonoBehaviour, IHitable
 
     private void OnAttack()
     {
-        _attacker.Attack(_isMoving);
+        if (_groundChecker.IsGrounded)
+            _attacker.Attack(_isMoving);
     }
 
     private void OnDie()
@@ -118,8 +131,8 @@ public class Player : MonoBehaviour, IHitable
         _animator.SetDie();
     }
 
-    private void OnDead()
+    private void OnDied()
     {
-        Dead?.Invoke(this);
+        Died?.Invoke(this);
     }
 }

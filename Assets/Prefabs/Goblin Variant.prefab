@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.2, y: 0.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7647910516361135070}
@@ -76,7 +76,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.3, y: 1}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2719604177739141147
 MonoBehaviour:
@@ -112,7 +112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2760276706222705675, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: _hitForce
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2760276706222705675, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: _movementSpeed
@@ -122,6 +122,10 @@ PrefabInstance:
       propertyPath: _playerDetector
       value: 
       objectReference: {fileID: 2719604177739141147}
+    - target: {fileID: 2760276706222705675, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
+      propertyPath: _distanceToAttack
+      value: 0.55
+      objectReference: {fileID: 0}
     - target: {fileID: 3963972307363394677, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: m_Name
       value: Goblin Variant
@@ -142,9 +146,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 7769114245000617018, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
+      propertyPath: _max
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7871395546899665524, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
+      propertyPath: m_Size.y
+      value: 0.96
+      objectReference: {fileID: 0}
     - target: {fileID: 7871395546899665524, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: m_Offset.y
-      value: 0.04
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7871395546899665524, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -219,10 +231,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3030e9c6b26ea42a8d974ec023f278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 5
-  _attackCD: 2
-  _attackRange: 0.7
-  _weaponPositionOffset: {x: 0, y: -0.3, z: 0}
+  Damage: 5
+  AttackCD: 1
+  AttackRange: 0.7
+  WeaponPositionOffset: {x: 0, y: -0.3, z: 0}
 --- !u!4 &7647910516361135070 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7979299685695773247, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}

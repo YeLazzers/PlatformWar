@@ -2,17 +2,20 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterAnimator))]
+[RequireComponent(typeof(CharacterAnimationEvents))]
 [RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
 {
     [SerializeField] private PlayerDetector _playerDetector;
     [SerializeField] private Route route;
     [SerializeField] private float _movementSpeed;
-    [SerializeField] private float _pushForce;
+    [SerializeField] private float _knockbackForce;
     [SerializeField] private float _distanceToAttack;
 
-    private Rigidbody2D _rigidBody;
-    private CharacterAnimator _characterAnimator;
+    private Rigidbody2D _rigidbody;
+    private CharacterAnimator _animator;
+    private CharacterAnimationEvents _animationEvents;
+    private Health _health;
     private EnemyAttacker _attacker;
     private PatrolMover _patrolMover;
     private FollowMover _followMover;
@@ -20,12 +23,14 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
 
     private void Awake()
     {
-        _rigidBody = GetComponent<Rigidbody2D>();
-        _characterAnimator = GetComponent<CharacterAnimator>();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<CharacterAnimator>();
+        _animationEvents = GetComponent<CharacterAnimationEvents>();
         _attacker = GetComponent<EnemyAttacker>();
+        _health = GetComponent<Health>();
 
-        _patrolMover = new PatrolMover(_rigidBody, _movementSpeed, this, route);
-        _followMover = new FollowMover(_rigidBody, _movementSpeed, this, _distanceToAttack);
+        _patrolMover = new PatrolMover(_rigidbody, _movementSpeed, this, route);
+        _followMover = new FollowMover(_rigidbody, _movementSpeed, this, _distanceToAttack);
 
         _currentMover = _patrolMover;
 
@@ -40,6 +45,16 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
             _playerDetector.Detected += OnPlayerDetected;
             _playerDetector.Missed += OnPlayerMissed;
         }
+
+        _animationEvents.Hitted += OnHitted;
+
+        if (_attacker != null)
+        {
+            _animationEvents.Attacking += _attacker.DoDamage;
+            _attacker.TargetEscaped += ContinueMoving;
+        }
+
+        _health.Died += OnDied;
     }
 
     private void OnDisable()
@@ -51,6 +66,16 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
             _playerDetector.Detected -= OnPlayerDetected;
             _playerDetector.Missed -= OnPlayerMissed;
         }
+
+        _animationEvents.Hitted -= OnHitted;
+
+        if (_attacker != null)
+        {
+            _animationEvents.Attacking -= _attacker.DoDamage;
+            _attacker.TargetEscaped += ContinueMoving;
+        }
+
+        _health.Died -= OnDied;
     }
 
     private void Start()
@@ -61,23 +86,25 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
     private void Update()
     {
         _currentMover.Move();
-        _characterAnimator.SetIsRunning(_currentMover.IsActive);
+        _animator.SetIsRunning(_currentMover.IsActive);
     }
 
     public void ContinueMoving() =>
         _currentMover.Activate();
 
-    public void StopMoving() =>
+    public void StopMoving()
+    {
         _currentMover.Deactivate();
+    }
 
     public void Knockback(Vector3 direction) =>
-        _rigidBody.AddForce(direction.normalized * _pushForce, ForceMode2D.Impulse);
+        _rigidbody.AddForce(direction.normalized * _knockbackForce, ForceMode2D.Impulse);
 
     public void Hit()
     {
         StopMoving();
-        _characterAnimator.SetHit();
-        _attacker.ReloadAttack();
+
+        _animator.SetHit();
     }
 
     private void SwitchToFollowMover()
@@ -99,11 +126,11 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
     {
         StopMoving();
 
-        _attacker.StartAttacking(target);
+        _attacker?.StartAttacking(target);
     }
     private void OnPlayerMissed(Player player)
     {
-        _attacker.StopAttacking();
+        _attacker?.StopAttacking();
 
         SwitchToPatrolMover();
     }
@@ -112,5 +139,17 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
     {
         _followMover.SetTarget(player.transform);
         SwitchToFollowMover();
+    }
+
+    private void OnHitted()
+    {
+        ContinueMoving();
+
+        _attacker?.ReloadAttack();
+    }
+
+    private void OnDied()
+    {
+        Destroy(gameObject);
     }
 }

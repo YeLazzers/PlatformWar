@@ -32,6 +32,6 @@ public class PlayerLootCollector : MonoBehaviour
 
     private void OnBoxCollected(Box box)
     {
-        _health.Heal(box.HealthValue);
+        _health.TakeHeal(box.HealthValue);
     }
 }

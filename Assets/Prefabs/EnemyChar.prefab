@@ -15,7 +15,9 @@ GameObject:
   - component: {fileID: 7871395546899665524}
   - component: {fileID: 2760276706222705675}
   - component: {fileID: 3563338252023740754}
-  - component: {fileID: 4793247458055780509}
+  - component: {fileID: 4453077476128797688}
+  - component: {fileID: 7769114245000617018}
+  - component: {fileID: 4299430863974301265}
   m_Layer: 7
   m_Name: EnemyChar
   m_TagString: Untagged
@@ -196,9 +198,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3685906beba21dc4cbe6f1e9bc3f60d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerDetector: {fileID: 0}
   route: {fileID: 0}
   _movementSpeed: 0
-  _hitForce: 0
+  _knockbackForce: 0
+  _distanceToAttack: 0
 --- !u!114 &3563338252023740754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a66c12986430244e8062a9c5c2ad92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4793247458055780509
+--- !u!114 &4453077476128797688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,10 +224,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 3963972307363394677}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2d7ae6857954e64badf2e00863be02a, type: 3}
+  m_Script: {fileID: 11500000, guid: bb0e0a5faf4431e41a5d3f38493d03d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 0
+--- !u!114 &7769114245000617018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3963972307363394677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9dc5e93293354169a2d4b901a507352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _max: 0
+--- !u!114 &4299430863974301265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3963972307363394677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648a0b1ef8c8745c38a6894798bc6f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: {fileID: 7769114245000617018}
+  _uiElement: {fileID: 0}
+  _offset: {x: 0, y: 0.65, z: 0}
 --- !u!1 &7789892148167827066
 GameObject:
   m_ObjectHideFlags: 0

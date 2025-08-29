@@ -19,6 +19,11 @@ public class CharacterAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
+    public void Reset()
+    {
+        _animator.Rebind();
+    }
+
     public void SetIsRunning(bool value)
     {
         _animator.SetBool(_isRunningHash, value);
