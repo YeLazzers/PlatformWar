@@ -16,7 +16,7 @@ public class HealthBarSmooth : UIHealthBase
         _slider = GetComponent<Slider>();
     }
 
-    public override void Set(int current, int max)
+    public override void Set(float current, float max)
     {
         _maxValue = max;
         _slider.maxValue = _maxValue;

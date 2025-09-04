@@ -1,39 +1,43 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(CharacterAnimator))]
-[RequireComponent(typeof(CharacterAnimationEvents))]
-[RequireComponent(typeof(Health))]
-public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
+public class Enemy : Unit, ICoroutineRunner, IKnockbackable, IHitable
 {
+    [Header("Modules")]
+    [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private CharacterAnimator _animator;
+    [SerializeField] private CharacterAnimationEvents _animationEvents;
+    [SerializeField] private Health _health;
+    [SerializeField] private EnemyAttacker _attacker;
     [SerializeField] private PlayerDetector _playerDetector;
+
+    [Header("Params")]
     [SerializeField] private Route route;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _knockbackForce;
     [SerializeField] private float _distanceToAttack;
 
-    private Rigidbody2D _rigidbody;
-    private CharacterAnimator _animator;
-    private CharacterAnimationEvents _animationEvents;
-    private Health _health;
-    private EnemyAttacker _attacker;
     private PatrolMover _patrolMover;
     private FollowMover _followMover;
     private MoverBase _currentMover;
 
+    private void OnValidate()
+    {
+        _rigidbody ??= GetComponent<Rigidbody2D>();
+    }
+
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<CharacterAnimator>();
-        _animationEvents = GetComponent<CharacterAnimationEvents>();
-        _attacker = GetComponent<EnemyAttacker>();
-        _health = GetComponent<Health>();
+        // _rigidbody = GetComponent<Rigidbody2D>();
+        // _animator = GetComponent<CharacterAnimator>();
+        // _animationEvents = GetComponent<CharacterAnimationEvents>();
+        // _attacker = GetComponent<EnemyAttacker>();
+        // _health = GetComponent<Health>();
 
         _patrolMover = new PatrolMover(_rigidbody, _movementSpeed, this, route);
         _followMover = new FollowMover(_rigidbody, _movementSpeed, this, _distanceToAttack);
 
         _currentMover = _patrolMover;
-
     }
 
     private void OnEnable()
@@ -152,4 +156,6 @@ public class Enemy : MonoBehaviour, ICoroutineRunner, IKnockbackable, IHitable
     {
         Destroy(gameObject);
     }
+
+
 }

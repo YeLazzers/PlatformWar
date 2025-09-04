@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerStatsView : MonoBehaviour
@@ -22,9 +23,9 @@ public class PlayerStatsView : MonoBehaviour
         _player.Wallet.CoinsChanged -= UpdateCoinsUI;
     }
 
-    private void UpdateHealthUI(int current, int max)
+    private void UpdateHealthUI(float current, float max)
     {
-        _healthTMP.text = $"{current} / {max}";
+        _healthTMP.text = $"{current.ConvertTo<int>()} / {max.ConvertTo<int>()}";
     }
 
     private void UpdateCoinsUI(int amount)

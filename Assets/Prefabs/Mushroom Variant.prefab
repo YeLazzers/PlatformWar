@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 336649428053639521, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 425825805, guid: 00672ef8736454b48b8d63d74e57ca72, type: 3}
     - target: {fileID: 2345442150096035315, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: m_Size.x
       value: 1
@@ -48,6 +52,10 @@ PrefabInstance:
       propertyPath: _maxHealth
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 7389011172337916179, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a2b0ce0f9a9053743831c8298abd6424, type: 2}
     - target: {fileID: 7769114245000617018, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: _max
       value: 5
@@ -103,6 +111,10 @@ PrefabInstance:
     - target: {fileID: 7979299685695773247, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091045881670907514, guid: c2a70c6ecc940a045b348c5c44a094e0, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

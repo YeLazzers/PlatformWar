@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class CharacterAnimator : MonoBehaviour
 {
     private readonly int _isRunningHash = Animator.StringToHash("IsRunning");
@@ -12,12 +11,7 @@ public class CharacterAnimator : MonoBehaviour
     private readonly int _hitHash = Animator.StringToHash("Hit");
     private readonly int _dieHash = Animator.StringToHash("Die");
 
-    private Animator _animator;
-
-    private void Awake()
-    {
-        _animator = GetComponent<Animator>();
-    }
+    [SerializeField] private Animator _animator;
 
     public void Reset()
     {

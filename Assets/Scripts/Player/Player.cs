@@ -4,11 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(CharacterAnimator))]
-[RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Wallet))]
 [RequireComponent(typeof(PlayerAttacker))]
 [RequireComponent(typeof(CharacterAnimationEvents))]
-public class Player : MonoBehaviour, IHitable
+public class Player : Unit, IHitable
 {
     [SerializeField] private GroundChecker _groundChecker;
     [SerializeField] private InputReader _inputReader;
@@ -103,8 +102,6 @@ public class Player : MonoBehaviour, IHitable
     {
         if (_rigidbody.isKinematic)
             return;
-
-        bool isMovingPrevState = _isMoving;
 
         _directionFlipper.FlipHorizontal(direction);
 

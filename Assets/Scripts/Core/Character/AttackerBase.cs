@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterAnimator))]
+// [RequireComponent(typeof(CharacterAnimator))]
 public abstract class AttackerBase : MonoBehaviour
 {
+    [Header("Modules")]
+    [SerializeField] protected CharacterAnimator Animator;
+
+    [Header("Params")]
     [SerializeField] protected int Damage;
     [Min(0.1f)]
     [SerializeField] protected float AttackCD;
@@ -13,7 +17,6 @@ public abstract class AttackerBase : MonoBehaviour
     [SerializeField] protected Vector3 WeaponPositionOffset;
 
     protected WaitForSeconds WaitForAttack;
-    protected CharacterAnimator Animator;
 
 
     private Coroutine _waitForAttackCoroutine;
@@ -22,8 +25,6 @@ public abstract class AttackerBase : MonoBehaviour
 
     protected void Awake()
     {
-        Animator = GetComponent<CharacterAnimator>();
-
         WaitForAttack = new WaitForSeconds(AttackCD);
 
         AllowAtack();

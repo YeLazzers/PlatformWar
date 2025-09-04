@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class CharacterAnimationEvents : MonoBehaviour
 {
     public event Action Attacking;

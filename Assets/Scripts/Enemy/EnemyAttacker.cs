@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Enemy))]
 public class EnemyAttacker : AttackerBase
 {
     private Coroutine _attackingCoroutine;

@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class HealthPresenter : MonoBehaviour
 {
+    [Header("Modules")]
     [SerializeField] private Health _health;
     [SerializeField] private UIHealthBase _uiElement;
+
+    [Header("Modules")]
     [SerializeField] private Vector3 _offset;
 
     private void Start()
