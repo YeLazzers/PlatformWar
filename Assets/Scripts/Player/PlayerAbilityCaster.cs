@@ -46,7 +46,7 @@ public class PlayerAbilityCaster : MonoBehaviour
     private Ability InitializeAbility(AbilityLibrary library, AbilityNames name, Transform vfxHolder)
     {
         AbilityConfig config = library.GetAbilityConfig(name);
-        Ability ability = new(config, _caster);
+        Ability ability = new(config, _caster, vfxHolder);
 
         return ability;
     }

@@ -9,7 +9,7 @@ public class Ability
     private IAbilityVisualizer _visualizer;
     private Coroutine _executeCoroutine;
 
-    public Ability(AbilityConfig config, Unit caster)
+    public Ability(AbilityConfig config, Unit caster, Transform parent)
     {
         _config = config;
         _caster = caster;
@@ -22,7 +22,7 @@ public class Ability
         };
         FillDefaultContext();
 
-        _visualizer = GameObject.Instantiate(config.VisualizerPrefab);
+        _visualizer = GameObject.Instantiate(config.VisualizerPrefab, parent);
         _visualizer.Initialize(this);
 
 
