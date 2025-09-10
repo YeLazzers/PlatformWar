@@ -22,10 +22,7 @@ public class InputReader : MonoBehaviour
 
         if (Input.GetKeyDown(AbilityPrimaryKeyCode))
             AbilityPressed?.Invoke(AbilitySlot.Primary);
-    }
 
-    private void FixedUpdate()
-    {
         HorizontalMoving?.Invoke(Input.GetAxis(nameof(Horizontal)));
     }
 }

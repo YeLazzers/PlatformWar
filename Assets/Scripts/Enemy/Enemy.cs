@@ -21,18 +21,9 @@ public class Enemy : Unit, ICoroutineRunner, IKnockbackable, IHitable
     private FollowMover _followMover;
     private MoverBase _currentMover;
 
-    private void OnValidate()
-    {
-        _rigidbody ??= GetComponent<Rigidbody2D>();
-    }
-
     private void Awake()
     {
-        // _rigidbody = GetComponent<Rigidbody2D>();
-        // _animator = GetComponent<CharacterAnimator>();
-        // _animationEvents = GetComponent<CharacterAnimationEvents>();
-        // _attacker = GetComponent<EnemyAttacker>();
-        // _health = GetComponent<Health>();
+        _rigidbody = GetComponent<Rigidbody2D>();
 
         _patrolMover = new PatrolMover(_rigidbody, _movementSpeed, this, route);
         _followMover = new FollowMover(_rigidbody, _movementSpeed, this, _distanceToAttack);

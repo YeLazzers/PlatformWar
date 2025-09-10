@@ -6,7 +6,5 @@ public abstract class AbilityVisualizerBase : MonoBehaviour, IAbilityVisualizer
 
     public abstract void Hide();
 
-    public abstract void Show(Unit caster, AbilityRuntime runtime);
-
-    public abstract void UpdateContext(AbilityContext context);
+    public abstract void Show(AbilityRuntime runtime, Unit caster);
 }

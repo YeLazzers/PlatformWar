@@ -1,15 +1,15 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AbilityView))]
+[RequireComponent(typeof(AbilityButtonView))]
 public class AbilityRuntimePresenter : MonoBehaviour
 {
-    [SerializeField] private AbilityView _view;
+    [SerializeField] private AbilityButtonView _view;
 
     private AbilityRuntime _runtime;
 
-    private void OnValidate()
+    private void Awake()
     {
-        _view ??= GetComponent<AbilityView>();
+        _view = GetComponent<AbilityButtonView>();
     }
 
     private void OnDisable()
@@ -24,11 +24,13 @@ public class AbilityRuntimePresenter : MonoBehaviour
         _runtime.CooldownEnded -= _view.HideCooldown;
     }
 
-    public void Initialize(AbilityRuntime runtime)
+    public void Initialize(AbilityRuntime runtime, AbilityConfig config)
     {
         _runtime = runtime;
 
-        name = $"{nameof(AbilityView)} - {runtime.Ability.name}";
+        name = $"{nameof(AbilityButtonView)} - {config.Name}";
+
+        _view.SetIcon(config.Icon);
 
         _runtime.Activated += _view.ShowActive;
         _runtime.DurationChanged += _view.SetActiveTimer;

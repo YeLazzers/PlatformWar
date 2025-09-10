@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class AbilityRuntime
 {
-    private Ability _ability;
-    private IAbilityVisualizer _visualizer;
+    private AbilityConfig _config;
+    private IAbilityExecutable _executor;
     private WaitForSeconds _tickWaiter;
 
-    public AbilityRuntime(Ability ability, AbilityVisualizerBase visualizer)
+    public AbilityRuntime(AbilityConfig config)
     {
-        _ability = ability;
-        _visualizer = visualizer;
+        _config = config;
 
-        _tickWaiter = new WaitForSeconds(_ability.TickRate);
+        _tickWaiter = new WaitForSeconds(config.TickRate);
+        _executor = ExecutorFaсtory.InstantiateExecutor(config.ExecutionPolicy);
 
         IsAvailable = true;
     }
@@ -25,113 +25,73 @@ public class AbilityRuntime
     public event Action<float, float> CooldownChanged;
     public event Action CooldownEnded;
 
-    public Ability Ability => _ability;
+    public AbilityConfig AbilityConfig => _config;
     public float DurationTimer { get; private set; }
     public float CooldownTimer { get; private set; }
     public bool IsActive { get; private set; }
     public bool IsAvailable { get; private set; }
 
-    public IEnumerator Execute(Unit caster)
+    public IEnumerator Execute(AbilityContext context, IAbilityVisualizer visualizer)
     {
         if (IsActive) yield break;
 
-        IsActive = true;
         IsAvailable = false;
 
+        IsActive = true;
+        visualizer.Show(this, context.Caster);
 
-        switch (_ability.ExecutionPolicy)
-        {
-            case AbilityExecutionPolicy.Instant:
-                yield return ExecuteOnce(caster);
-                IsActive = false;
-                yield return WaitWhileCooldown();
-                break;
+        yield return _executor.Execute(this, context);
 
-            case AbilityExecutionPolicy.Channeled:
-                yield return ExecuteChanneled(caster);
-                IsActive = false;
-                yield return WaitWhileCooldown();
-                break;
+        IsActive = false;
+        visualizer.Hide();
 
-            case AbilityExecutionPolicy.Aura:
-                yield return ExecuteAura(caster);
-                break;
-        }
+        yield return WaitWhileCooldown();
 
         IsAvailable = true;
     }
 
-    private IEnumerator ExecuteOnce(Unit caster)
+    public void ApplyActions(AbilityContext context)
     {
-        ApplyActions(caster);
-        yield break;
+
+        context.Targets = AbilityTargetSelector.TryGetTargets(_config, context);
+
+        if (context.Targets != null)
+        {
+            AbilityAction.ApplyAction(_config, context);
+        }
     }
 
-    private IEnumerator ExecuteChanneled(Unit caster)
+    public void NotifyActivated(float duration)
     {
-        DurationTimer = _ability.Duration;
-
-        Activated?.Invoke(_ability.Duration);
-        _visualizer.Show(caster, this);
-
-        while (DurationTimer > 0)
-        {
-            ApplyActions(caster);
-            yield return _tickWaiter;
-            DurationTimer -= _ability.TickRate;
-
-            DurationChanged?.Invoke(DurationTimer, _ability.Duration);
-        }
-
-        _visualizer.Hide();
-        Deactivated?.Invoke();
+        DurationTimer = duration;
+        Activated?.Invoke(duration);
     }
-    private IEnumerator ExecuteAura(Unit caster)
+
+    public void NotifyDurationChanged(float current, float max)
     {
-        Activated?.Invoke(0f);
+        DurationTimer = current;
+        DurationChanged?.Invoke(current, max);
+    }
 
-        while (IsActive)
-        {
-            ApplyActions(caster);
-            yield return _tickWaiter;
-        }
-
+    public void NotifyDeactivated()
+    {
         Deactivated?.Invoke();
     }
 
     private IEnumerator WaitWhileCooldown()
     {
-        CooldownTimer = _ability.Cooldown;
+        CooldownTimer = _config.Cooldown;
 
-        CooldownStarted?.Invoke(_ability.Cooldown);
+        CooldownStarted?.Invoke(_config.Cooldown);
 
         while (CooldownTimer > 0)
         {
-            yield return _tickWaiter;
-            CooldownTimer -= _ability.TickRate;
+            yield return null;
+            CooldownTimer -= Time.deltaTime;
 
-            CooldownChanged?.Invoke(CooldownTimer, _ability.Cooldown);
+            CooldownChanged?.Invoke(CooldownTimer, _config.Cooldown);
         }
 
         CooldownEnded?.Invoke();
-    }
-
-    private void ApplyActions(Unit caster)
-    {
-
-        var context = new AbilityContext
-        {
-            Caster = caster,
-            Targets = null,
-            Data = new(),
-        };
-
-        context.Targets = _ability.SelectTargets(context);
-        _visualizer.UpdateContext(context);
-
-        if (context.Targets != null)
-        {
-            _ability.ApplyActions(context);
-        }
     }
 }

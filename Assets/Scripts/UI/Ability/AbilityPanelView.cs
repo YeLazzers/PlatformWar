@@ -1,16 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AbilityPanelView : MonoBehaviour
 {
-    [SerializeField] private PlayerAbilityCaster _abilityCaster;
-    [SerializeField] private AbilityRuntimePresenter _abilityPresenterPrefab;
+    [SerializeField] private AbilityRuntimePresenter _presenterPrefab;
 
-    private void Start()
+    public void Initialize(List<Ability> abilities)
     {
-        foreach (var abilityRuntime in _abilityCaster.AbilityRuntimes.Values)
+        abilities.ForEach(ability =>
         {
-            var abilityPresenter = Instantiate(_abilityPresenterPrefab, transform);
-            abilityPresenter.Initialize(abilityRuntime);
-        }
+            var runtimePresenter = Instantiate(_presenterPrefab, transform);
+            runtimePresenter.Initialize(ability.Runtime, ability.Config);
+        });
     }
 }

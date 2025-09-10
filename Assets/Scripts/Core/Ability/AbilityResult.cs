@@ -6,7 +6,7 @@ public class EffectEvent
 {
     public Unit Target;
     public float Value;     // фактически применённое значение
-    public EffectType Type;
+    public EffectType Type; 
 }
 
 public class AbilityResult

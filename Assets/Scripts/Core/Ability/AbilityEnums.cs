@@ -12,10 +12,21 @@ public enum AbilityExecutionPolicy
     Aura
 }
 
-public enum AbilityTargetingPolicy
+public enum AbilityCastingPolicy
 {
     Self,
-    Target,
-    NonTarget,
-    Directional,
+    Cursor,
+}
+
+public enum AbilityTargetingPolicy
+{
+    None,
+    Nearest,
+    Single,
+    All,
+}
+
+public enum AbilityNames
+{
+    HealthSteal,
 }

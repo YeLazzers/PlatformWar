@@ -2,22 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(InputReader))]
-public class PlayerAbilityCaster : Unit
+public class PlayerAbilityCaster : MonoBehaviour
 {
-    [SerializeField] private Ability _primarySO;
+    [SerializeField] private Unit _caster;
+    [SerializeField] private AbilityNames _primary;
 
     private InputReader _inputReader;
-    public Dictionary<AbilitySlot, AbilityRuntime> AbilityRuntimes { get; private set; }
-
-    private void OnValidate()
-    {
-        _inputReader ??= GetComponent<InputReader>();
-        AbilityRuntimes ??= new();
-    }
+    public Dictionary<AbilitySlot, Ability> Abilities { get; private set; }
 
     private void Awake()
     {
-        InitializeAbility(AbilitySlot.Primary, _primarySO);
+        _inputReader = GetComponent<InputReader>();
     }
 
     private void OnEnable()
@@ -30,23 +25,29 @@ public class PlayerAbilityCaster : Unit
         _inputReader.AbilityPressed -= OnAbilityTriggered;
     }
 
+    public void Initialize(AbilityLibrary library, Transform vfxHolder)
+    {
+        Abilities = new()
+        {
+            { AbilitySlot.Primary, InitializeAbility(library, _primary, vfxHolder) }
+        };
+    }
+
     private void OnAbilityTriggered(AbilitySlot slot)
     {
-        AbilityRuntimes.TryGetValue(slot, out AbilityRuntime ability);
+        Abilities.TryGetValue(slot, out Ability ability);
 
-        if (ability != null && ability.IsAvailable)
+        if (ability != null && ability.Runtime.IsAvailable)
         {
-            StartCoroutine(ability.Execute(this));
+            ability.Execute();
         }
     }
 
-    private void InitializeAbility(AbilitySlot slot, Ability ability)
+    private Ability InitializeAbility(AbilityLibrary library, AbilityNames name, Transform vfxHolder)
     {
-        AbilityVisualizerBase visualizer = Instantiate(ability.Visualizer, transform);
-        visualizer.Initialize(ability);
+        AbilityConfig config = library.GetAbilityConfig(name);
+        Ability ability = new(config, _caster);
 
-        AbilityRuntime runtime = new AbilityRuntime(ability, visualizer);
-
-        AbilityRuntimes.Add(slot, runtime);
+        return ability;
     }
 }
